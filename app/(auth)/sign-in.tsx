@@ -49,7 +49,8 @@ export default function SignInScreen() {
 
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.replace("/(tabs)/map");
+        // Let the index page handle routing based on onboarding status
+        router.replace("/");
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
         Alert.alert("Error", "Sign in failed. Please try again.");
@@ -87,7 +88,8 @@ export default function SignInScreen() {
       if (createdSessionId && setActive) {
         console.log("Setting active session...");
         await setActive({ session: createdSessionId });
-        router.replace("/(tabs)/map");
+        // Let the index page handle routing based on onboarding status
+        router.replace("/");
       } else {
         // OAuth was cancelled or failed
         console.log("OAuth sign in was cancelled or failed");

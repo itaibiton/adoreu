@@ -78,7 +78,7 @@ export default function SignUpScreen() {
 
       if (completeSignUp.status === "complete") {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.replace("/(auth)/onboarding");
+        router.replace("/(auth)/welcome");
       } else {
         console.error(JSON.stringify(completeSignUp, null, 2));
         Alert.alert("Error", "Verification failed. Please try again.");
@@ -116,7 +116,7 @@ export default function SignUpScreen() {
       if (createdSessionId && setActive) {
         console.log("Setting active session...");
         await setActive({ session: createdSessionId });
-        router.replace("/(auth)/onboarding");
+        router.replace("/(auth)/welcome");
       } else {
         // OAuth was cancelled or failed
         console.log("OAuth sign up was cancelled or failed");
