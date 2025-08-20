@@ -155,14 +155,14 @@ export default function OnboardingScreen() {
                       key={interest}
                       onPress={() => toggleInterest(interest)}
                       className={`m-1 px-4 py-2 rounded-full border ${isSelected
-                          ? "bg-blue-600 border-blue-600"
-                          : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                        ? "bg-blue-600 border-blue-600"
+                        : "bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
                         }`}
                     >
                       <Text
                         className={`text-sm ${isSelected
-                            ? "text-white"
-                            : "text-gray-700 dark:text-gray-300"
+                          ? "text-white"
+                          : "text-gray-700 dark:text-gray-300"
                           }`}
                       >
                         {interest}
@@ -181,8 +181,8 @@ export default function OnboardingScreen() {
               onPress={onCompletePress}
               disabled={isLoading || !handle || !homeCity || selectedInterests.length === 0}
               className={`w-full py-3 rounded-lg mt-6 ${!handle || !homeCity || selectedInterests.length === 0
-                  ? "bg-gray-400"
-                  : "bg-blue-600"
+                ? "bg-gray-400"
+                : "bg-blue-600"
                 }`}
             >
               {isLoading ? (
