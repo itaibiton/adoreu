@@ -101,7 +101,7 @@ export default function SignUpScreen() {
     setIsLoading(true);
     try {
       const startOAuthFlow = provider === "google" ? startGoogleOAuth : startAppleOAuth;
-      
+
       if (!startOAuthFlow) {
         console.log("OAuth provider not configured");
         Alert.alert("Error", "OAuth provider not configured");
@@ -224,7 +224,7 @@ export default function SignUpScreen() {
                 <TouchableOpacity
                   onPress={onSignUpPress}
                   disabled={isLoading}
-                  className="w-full bg-blue-600 py-3 rounded-lg mt-4"
+                  className="w-full bg-blue-600 py-3 rounded-lg"
                 >
                   {isLoading ? (
                     <ActivityIndicator color="white" />
@@ -234,6 +234,53 @@ export default function SignUpScreen() {
                     </Text>
                   )}
                 </TouchableOpacity>
+
+                {/* OAuth Buttons */}
+                <View className="mt-6">
+                  <View className="flex-row items-center mb-4">
+                    <View className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+                    <Text className="mx-4 text-gray-500 dark:text-gray-400">
+                      Or continue with
+                    </Text>
+                    <View className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
+                  </View>
+
+                  <View className="flex-row">
+                    <TouchableOpacity
+                      onPress={() => onSignUpWithOAuth("google")}
+                      disabled={isLoading}
+                      className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg flex-row items-center justify-center mr-3"
+                    >
+                      <AntDesign
+                        name="google"
+                        size={20}
+                        color="#4285F4"
+                        style={{ marginRight: 8 }}
+                      />
+                      <Text className="text-gray-700 dark:text-gray-300 font-medium">
+                        Google
+                      </Text>
+                    </TouchableOpacity>
+
+                    {Platform.OS === "ios" && (
+                      <TouchableOpacity
+                        onPress={() => onSignUpWithOAuth("apple")}
+                        disabled={isLoading}
+                        className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg flex-row items-center justify-center"
+                      >
+                        <AntDesign
+                          name="apple1"
+                          size={20}
+                          color={colorScheme === "dark" ? "#FFFFFF" : "#000000"}
+                          style={{ marginRight: 8 }}
+                        />
+                        <Text className="text-gray-700 dark:text-gray-300 font-medium">
+                          Apple
+                        </Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </View>
 
                 {/* Sign In Link */}
                 <View className="flex-row justify-center mt-8">
@@ -249,7 +296,7 @@ export default function SignUpScreen() {
               </View>
             ) : (
               // Verification Form
-              <View className="space-y-4">
+              <View>
                 <Text className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
                   Verify your email
                 </Text>
@@ -257,7 +304,7 @@ export default function SignUpScreen() {
                   We've sent a verification code to {emailAddress}
                 </Text>
 
-                <View>
+                <View className="mb-6">
                   <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Verification Code
                   </Text>
@@ -275,7 +322,7 @@ export default function SignUpScreen() {
                 <TouchableOpacity
                   onPress={onPressVerify}
                   disabled={isLoading}
-                  className="w-full bg-blue-600 py-3 rounded-lg mt-4"
+                  className="w-full bg-blue-600 py-3 rounded-lg mb-4"
                 >
                   {isLoading ? (
                     <ActivityIndicator color="white" />
@@ -288,7 +335,6 @@ export default function SignUpScreen() {
 
                 <TouchableOpacity
                   onPress={() => setPendingVerification(false)}
-                  className="mt-4"
                 >
                   <Text className="text-blue-600 text-center">
                     Back to sign up
