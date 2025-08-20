@@ -1,6 +1,6 @@
-import { useSignUp } from "@clerk/clerk-expo";
+import { useSignUp, useOAuth } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   Text,
   TextInput,
@@ -13,6 +13,12 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { AntDesign } from "@expo/vector-icons";
+import { useColorScheme } from "react-native";
+import * as WebBrowser from "expo-web-browser";
+
+// Warm up the browser for OAuth
+WebBrowser.maybeCompleteAuthSession();
 
 export default function SignUpScreen() {
   const { isLoaded, signUp, setActive } = useSignUp();
@@ -23,6 +29,11 @@ export default function SignUpScreen() {
   const [pendingVerification, setPendingVerification] = useState(false);
   const [code, setCode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const colorScheme = useColorScheme();
+
+  // OAuth hooks
+  const { startOAuthFlow: startGoogleOAuth } = useOAuth({ strategy: "oauth_google" });
+  const { startOAuthFlow: startAppleOAuth } = useOAuth({ strategy: "oauth_apple" });
 
   const onSignUpPress = async () => {
     if (!isLoaded) return;
@@ -80,6 +91,46 @@ export default function SignUpScreen() {
     }
   };
 
+  const onSignUpWithOAuth = useCallback(async (provider: "google" | "apple") => {
+    console.log(`Starting OAuth with ${provider}...`);
+    if (!isLoaded) {
+      console.log("Clerk not loaded yet");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const startOAuthFlow = provider === "google" ? startGoogleOAuth : startAppleOAuth;
+      
+      if (!startOAuthFlow) {
+        console.log("OAuth provider not configured");
+        Alert.alert("Error", "OAuth provider not configured");
+        setIsLoading(false);
+        return;
+      }
+
+      console.log("Starting OAuth flow...");
+      const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow();
+      console.log("OAuth flow completed", { createdSessionId, signIn, signUp });
+
+      if (createdSessionId && setActive) {
+        console.log("Setting active session...");
+        await setActive({ session: createdSessionId });
+        router.replace("/(auth)/onboarding");
+      } else {
+        // OAuth was cancelled or failed
+        console.log("OAuth sign up was cancelled or failed");
+        console.log("SignIn status:", signIn?.status);
+        console.log("SignUp status:", signUp?.status);
+      }
+    } catch (err: any) {
+      console.error("OAuth error:", JSON.stringify(err, null, 2));
+      Alert.alert("Error", err.errors?.[0]?.message || err.message || "OAuth sign up failed");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [isLoaded, startGoogleOAuth, startAppleOAuth]);
+
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-gray-900">
       <KeyboardAvoidingView
@@ -103,13 +154,13 @@ export default function SignUpScreen() {
 
             {!pendingVerification ? (
               // Sign Up Form
-              <View className="space-y-4">
+              <View>
                 <Text className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                   Create your account
                 </Text>
 
-                <View className="flex-row space-x-3">
-                  <View className="flex-1">
+                <View className="flex-row mb-4">
+                  <View className="flex-1 mr-3">
                     <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       First Name
                     </Text>
@@ -138,7 +189,7 @@ export default function SignUpScreen() {
                   </View>
                 </View>
 
-                <View>
+                <View className="mb-4">
                   <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Email
                   </Text>
@@ -153,7 +204,7 @@ export default function SignUpScreen() {
                   />
                 </View>
 
-                <View>
+                <View className="mb-6">
                   <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     Password
                   </Text>

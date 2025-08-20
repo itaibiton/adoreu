@@ -15,6 +15,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as WebBrowser from "expo-web-browser";
 import * as Linking from "expo-linking";
+import { AntDesign } from "@expo/vector-icons";
+import { useColorScheme } from "react-native";
 
 // Warm up the browser for OAuth
 WebBrowser.maybeCompleteAuthSession();
@@ -24,6 +26,7 @@ export default function SignInScreen() {
   const [emailAddress, setEmailAddress] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const colorScheme = useColorScheme();
 
   // OAuth hooks
   const { startOAuthFlow: startGoogleOAuth } = useOAuth({ strategy: "oauth_google" });
@@ -69,7 +72,7 @@ export default function SignInScreen() {
     setIsLoading(true);
     try {
       const startOAuthFlow = provider === "google" ? startGoogleOAuth : startAppleOAuth;
-      
+
       if (!startOAuthFlow) {
         console.log("OAuth provider not configured");
         Alert.alert("Error", "OAuth provider not configured");
@@ -81,7 +84,7 @@ export default function SignInScreen() {
       const { createdSessionId, signIn, signUp, setActive } = await startOAuthFlow();
       console.log("OAuth flow completed", { createdSessionId, signIn, signUp });
 
-      if (createdSessionId) {
+      if (createdSessionId && setActive) {
         console.log("Setting active session...");
         await setActive({ session: createdSessionId });
         router.replace("/(tabs)/map");
@@ -121,12 +124,12 @@ export default function SignInScreen() {
             </View>
 
             {/* Sign In Form */}
-            <View className="space-y-4">
+            <View>
               <Text className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">
                 Welcome back
               </Text>
 
-              <View>
+              <View className="mb-4">
                 <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Email
                 </Text>
@@ -141,7 +144,7 @@ export default function SignInScreen() {
                 />
               </View>
 
-              <View>
+              <View className="mb-6">
                 <Text className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Password
                 </Text>
@@ -179,13 +182,19 @@ export default function SignInScreen() {
                   <View className="flex-1 h-px bg-gray-300 dark:bg-gray-600" />
                 </View>
 
-                <View className="flex-row space-x-3">
+                <View className="flex-row">
                   <TouchableOpacity
                     onPress={() => onSignInWithOAuth("google")}
                     disabled={isLoading}
-                    className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg"
+                    className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg flex-row items-center justify-center mr-3"
                   >
-                    <Text className="text-gray-700 dark:text-gray-300 text-center font-medium">
+                    <AntDesign
+                      name="google"
+                      size={20}
+                      color="#4285F4"
+                      style={{ marginRight: 8 }}
+                    />
+                    <Text className="text-gray-700 dark:text-gray-300 font-medium">
                       Google
                     </Text>
                   </TouchableOpacity>
@@ -194,9 +203,15 @@ export default function SignInScreen() {
                     <TouchableOpacity
                       onPress={() => onSignInWithOAuth("apple")}
                       disabled={isLoading}
-                      className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg"
+                      className="flex-1 border border-gray-300 dark:border-gray-600 py-3 rounded-lg flex-row items-center justify-center"
                     >
-                      <Text className="text-gray-700 dark:text-gray-300 text-center font-medium">
+                      <AntDesign
+                        name="apple1"
+                        size={20}
+                        color={colorScheme === "dark" ? "#FFFFFF" : "#000000"}
+                        style={{ marginRight: 8 }}
+                      />
+                      <Text className="text-gray-700 dark:text-gray-300 font-medium">
                         Apple
                       </Text>
                     </TouchableOpacity>
