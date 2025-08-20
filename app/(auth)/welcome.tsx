@@ -7,8 +7,8 @@ import {
   ScrollView,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import Animated, {
   useAnimatedStyle,
@@ -33,6 +33,7 @@ const slides = [
     iconName: "account-group",
     iconType: "material" as const,
     gradientColors: ["#3B82F6", "#8B5CF6"],
+    image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg',
   },
   {
     id: "2",
@@ -42,6 +43,8 @@ const slides = [
     iconName: "map-marked-alt",
     iconType: "fontawesome" as const,
     gradientColors: ["#10B981", "#3B82F6"],
+    image: 'https://images.pexels.com/photos/2450296/pexels-photo-2450296.jpeg',
+
   },
   {
     id: "3",
@@ -51,6 +54,8 @@ const slides = [
     iconName: "airplane",
     iconType: "ionicons" as const,
     gradientColors: ["#8B5CF6", "#EC4899"],
+    image: 'https://images.pexels.com/photos/93820/pexels-photo-93820.jpeg',
+
   },
 ];
 
@@ -87,62 +92,62 @@ export default function WelcomeScreen() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaView className="flex-1 bg-white dark:bg-gray-900">
-        <View className="flex-1">
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
+      <View className="flex-1 bg-white dark:bg-gray-900">
         {/* Skip Button */}
-        <View className="absolute top-4 right-6 z-10">
+        {/* <View className="absolute top-12 right-6 z-10">
           <TouchableOpacity onPress={handleSkip} className="py-2 px-4">
             <Text className="text-gray-600 dark:text-gray-400 text-base">
               Skip
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
 
         {/* Slides */}
         <ScrollView
-          ref={scrollViewRef}
-          horizontal
-          pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={handleScroll}
-          scrollEventThrottle={16}
-          className="flex-1"
-        >
-          {slides.map((slide) => (
-            <View key={slide.id} style={{ width: SCREEN_WIDTH }}>
-              <OnboardingSlide
-                title={slide.title}
-                description={slide.description}
-                iconName={slide.iconName}
-                iconType={slide.iconType}
-                gradientColors={slide.gradientColors}
-              />
-            </View>
-          ))}
-        </ScrollView>
-
-        {/* Bottom Section: Indicators and Button */}
-        <View className="px-6 pb-8">
-          {/* Page Indicators */}
-          <View className="flex-row justify-center mb-8">
-            {slides.map((_, index) => (
-              <Dot key={index} index={index} currentIndex={currentIndex} />
-            ))}
-          </View>
-
-          {/* Continue Button */}
-          <TouchableOpacity
-            onPress={handleContinue}
-            className="bg-blue-600 py-4 rounded-full items-center"
-            activeOpacity={0.8}
+            ref={scrollViewRef}
+            horizontal
+            pagingEnabled
+            showsHorizontalScrollIndicator={false}
+            onScroll={handleScroll}
+            scrollEventThrottle={16}
+            className="flex-1"
           >
-            <Text className="text-white font-semibold text-lg">
-              {currentIndex === slides.length - 1 ? "Get Started" : "Continue"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+            {slides.map((slide) => (
+              <View key={slide.id} style={{ width: SCREEN_WIDTH }}>
+                <OnboardingSlide
+                  title={slide.title}
+                  description={slide.description}
+                  image={slide.image}
+                  iconName={slide.iconName}
+                  iconType={slide.iconType}
+                  gradientColors={slide.gradientColors}
+                />
+              </View>
+            ))}
+          </ScrollView>
+
+          {/* Bottom Section: Indicators and Button */}
+          <View className="px-6 pb-8">
+            {/* Page Indicators */}
+            <View className="flex-row justify-center mb-8">
+              {slides.map((_, index) => (
+                <Dot key={index} index={index} currentIndex={currentIndex} />
+              ))}
+            </View>
+
+            {/* Continue Button */}
+            <TouchableOpacity
+              onPress={handleContinue}
+              className="bg-blue-600 py-4 rounded-full items-center"
+              activeOpacity={0.8}
+            >
+              <Text className="text-white font-semibold text-lg">
+                {currentIndex === slides.length - 1 ? "Get Started" : "Continue"}
+              </Text>
+            </TouchableOpacity>
+          </View>
       </View>
-    </SafeAreaView>
     </GestureHandlerRootView>
   );
 }

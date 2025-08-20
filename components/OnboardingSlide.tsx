@@ -39,44 +39,26 @@ export default function OnboardingSlide({
   };
 
   return (
-    <View className="flex-1 items-center justify-start px-6">
-      {/* Image/Icon Container */}
+    <View className="flex-1 items-center justify-start">
+      {/* Image/Icon Container - Full width, no padding */}
       <View
-        className="w-full rounded-3xl overflow-hidden mb-8"
+        className="w-full rounded-[4rem] overflow-hidden mb-8"
         style={{ height: height * 0.52 }}
       >
-        {image ? (
-          <Image
-            source={{ uri: image }}
-            className="w-full h-full"
-            resizeMode="cover"
-          />
-        ) : (
-          <LinearGradient
-            colors={gradientColors}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            className="w-full h-full items-center justify-center"
-          >
-            <View className="items-center">
-              {renderIcon()}
-              <View className="mt-6 px-8">
-                <View className="h-1 bg-white/20 rounded-full">
-                  <View className="h-1 bg-white rounded-full w-1/3" />
-                </View>
-              </View>
-            </View>
-          </LinearGradient>
-        )}
+        <Image
+          source={{ uri: image || 'https://via.placeholder.com/400x600' }}
+          className="w-full h-full"
+          resizeMode="cover"
+        />
       </View>
 
       {/* Title */}
-      <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-4">
+      <Text className="text-3xl font-bold text-gray-900 dark:text-white text-center mb-4 px-6">
         {title}
       </Text>
 
       {/* Description */}
-      <Text className="text-base text-gray-600 dark:text-gray-400 text-center leading-6 px-4">
+      <Text className="text-base text-gray-600 dark:text-gray-400 text-center leading-6 px-10">
         {description}
       </Text>
     </View>
