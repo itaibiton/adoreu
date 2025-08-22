@@ -1,7 +1,5 @@
 import React from "react";
 import { View, Text, Image, Dimensions } from "react-native";
-import { MaterialCommunityIcons, FontAwesome5, Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 
 interface OnboardingSlideProps {
   title: string;
@@ -18,31 +16,13 @@ export default function OnboardingSlide({
   title,
   description,
   image,
-  iconName,
-  iconType = "material",
-  gradientColors = ["#3B82F6", "#8B5CF6"],
 }: OnboardingSlideProps) {
-  const renderIcon = () => {
-    const iconProps = {
-      size: 120,
-      color: "white",
-    };
-
-    switch (iconType) {
-      case "fontawesome":
-        return <FontAwesome5 name={iconName || "users"} {...iconProps} />;
-      case "ionicons":
-        return <Ionicons name={iconName || "location-sharp"} {...iconProps} />;
-      default:
-        return <MaterialCommunityIcons name={iconName || "airplane"} {...iconProps} />;
-    }
-  };
 
   return (
     <View className="flex-1 items-center justify-start">
       {/* Image/Icon Container - Full width, no padding */}
       <View
-        className="w-full rounded-[4rem] overflow-hidden mb-8"
+        className="w-full rounded-b-[4rem] overflow-hidden mb-8"
         style={{ height: height * 0.52 }}
       >
         <Image

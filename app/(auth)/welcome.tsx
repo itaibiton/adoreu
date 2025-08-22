@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import {
   View,
   Text,
@@ -14,12 +14,8 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withSpring,
-  withTiming,
-  interpolate,
-  Extrapolate,
-  runOnJS,
 } from "react-native-reanimated";
-import { Gesture, GestureDetector, GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import OnboardingSlide from "../../components/OnboardingSlide";
 
 const { width: SCREEN_WIDTH } = Dimensions.get("window");
@@ -86,9 +82,6 @@ export default function WelcomeScreen() {
     }
   };
 
-  const handleSkip = () => {
-    router.push("/(auth)/user-info");
-  };
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
