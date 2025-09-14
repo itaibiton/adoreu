@@ -96,6 +96,15 @@ export default function TabLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="design-system"
+        options={{
+          title: "Design",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="color-palette-outline" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
