@@ -410,6 +410,18 @@ import { api } from "../convex/_generated/api";
 - Error: `red-600`
 - Gray scale: `gray-50` to `gray-900`
 
+## Feature PRDs
+
+### Map Feature
+When working on the map feature, refer to `/features-prds/map.prd.md` for:
+- User stories and personas
+- Functional requirements for map and list components
+- UI/UX specifications and interactions
+- Data models (UserLocation, Activity, MapState)
+- Performance requirements and optimization strategies
+- Privacy and location sharing settings
+- Implementation phases
+
 ## Notes for Claude
 
 When working on adoreu:
@@ -423,5 +435,6 @@ When working on adoreu:
 8. Add loading and error states for all async operations
 9. Use semantic git commits
 10. Run lint before suggesting code completion
+11. **For map feature**: Always reference `/features-prds/map.prd.md` for requirements and specifications
 
 Remember: adoreu is about connecting travelers and creating meaningful travel experiences. Keep the UX friendly, intuitive, and travel-focused.
